@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:src="@drawable/apple"
+        android:scaleType="centerCrop"
+        android:layout_width="120dp"
+        android:layout_height="100dp"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/icon"
+        android:layout_marginStart="10dp">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="#f0f"
+            android:text="草莓"/>
+
+        <TextView
+            android:id="@+id/wei"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="草莓味甘、酸、性凉、无毒。"/>
+        <TextView
+            android:id="@+id/effect"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="治疗便秘,清热,解暑"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/taboo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="痰湿内盛、肠滑便泻者、尿路结石病人不宜多食草莓。"
+        android:layout_below="@+id/icon"
+        android:layout_alignParentStart="true"/>
+</RelativeLayout>
