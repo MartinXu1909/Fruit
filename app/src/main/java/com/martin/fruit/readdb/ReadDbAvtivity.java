@@ -1,14 +1,14 @@
 package com.martin.fruit.readdb;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -17,17 +17,19 @@ import com.martin.fruit.R;
 import com.martin.fruit.adapter.MyBaseAdapter;
 import com.martin.fruit.bean.Fruit;
 import com.martin.fruit.utils.DbManger;
+import com.martin.fruit.utils.RefreshableView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Martin on 2017/4/29 0029.
  */
 
-public class ReadDbAvtivity extends AppCompatActivity {
+public class ReadDbAvtivity extends Activity {
     private ListView mListView;
     private int totalNum; // 表示当前控件加载数据的总条目
     private int pageSize = 20; // 表示每页展示数据的条目
@@ -37,7 +39,8 @@ public class ReadDbAvtivity extends AppCompatActivity {
     private MyBaseAdapter mAdapter;
     private boolean isDivPage;
     private Context mContext;
-    private SwipeRefreshLayout swipeRefresh;
+
+    RefreshableView refreshableView;
 
     public static final String PACKAGE_NAME = "com.martin.fruit";
     private static final String DB_NAME = "data.db3";
@@ -84,8 +87,10 @@ public class ReadDbAvtivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         mListView = (ListView) findViewById(R.id.lv);
+        refreshableView = (RefreshableView) findViewById(R.id.refreshable_view);
         String path = databaseFilename;
         Log.i("Main", path);
         final SQLiteDatabase db = openDatabase(this);
@@ -124,6 +129,30 @@ public class ReadDbAvtivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        refreshableView.setOnRefreshListener(new RefreshableView.PullToRefreshListener() {
+            @Override
+            public void onRefresh() {
+                try {
+                    Thread.sleep(1000);
+                    // TODO: 2017/4/29 0029 下拉更新内容
+
+                    totalList.clear();
+                    for (int i = 1; i <= pageNum; i++) {
+                        Random random = new Random();
+                        int index = random.nextInt(pageNum);
+                        Log.i("Main", index + "");
+                        currentPage = index;
+                        totalList.addAll(DbManger.getListByCurrentPage(db, TABLE_NAME, currentPage, pageSize));
+
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                refreshableView.finishRefreshing();
+            }
+        }, 0);
     }
 
 }
